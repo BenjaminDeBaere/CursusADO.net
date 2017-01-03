@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFOpgave2", "WPFOpgave2\WPFOpgave2.csproj", "{E06ED5B6-4330-4009-97B5-8863FEE08FEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TuinCommunity", "TuinCommunity\TuinCommunity.csproj", "{611CE8F6-4BC8-4D78-A544-9F48469F20DC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E06ED5B6-4330-4009-97B5-8863FEE08FEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E06ED5B6-4330-4009-97B5-8863FEE08FEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E06ED5B6-4330-4009-97B5-8863FEE08FEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E06ED5B6-4330-4009-97B5-8863FEE08FEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{611CE8F6-4BC8-4D78-A544-9F48469F20DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{611CE8F6-4BC8-4D78-A544-9F48469F20DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{611CE8F6-4BC8-4D78-A544-9F48469F20DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{611CE8F6-4BC8-4D78-A544-9F48469F20DC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
