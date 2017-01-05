@@ -5,8 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFOpgave2"
         mc:Ignorable="d"
-        Title="WPFOpgave3" Height="300" Width="300">
+        Title="WPFOpgave3" Height="450" Width="550">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="175"></ColumnDefinition>
+            <ColumnDefinition Width="1.5*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" Height="30" Margin="10,0,10,10" Content="Naam:" HorizontalContentAlignment="Center"></Label>
+        <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Height="30" Margin="10,17" Content="Adres: " HorizontalContentAlignment="Center"></Label>
+        <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Height="30" Margin="10,17" Content="Postcode: " HorizontalContentAlignment="Center"></Label>
+        <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Height="30" Margin="10,17" Content="Plaats: " HorizontalContentAlignment="Center"></Label>
+        <Button x:Name="ToevoegButton" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Height="30" Margin="10,17" Content="Toevoegen" Click="ToevoegButton_Click" ></Button>
+        <TextBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" Height="30" Margin="10,0,10,10" Name="NaamTextBox" Grid.ColumnSpan="2"></TextBox>
+        <TextBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Height="30" Margin="10,17" Name="AdresTextBox" Grid.ColumnSpan="2"></TextBox>
+        <TextBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Height="30" Margin="10,17" Name="PostcodeTextBox" Grid.ColumnSpan="2"></TextBox>
+        <TextBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Height="30" Margin="10,17" Name="PlaatsTextBox" Grid.ColumnSpan="2"></TextBox>
+        <Button x:Name="EindejaarsKortingButton" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Height="30" Margin="10,17" Content="Eindejaarskorting" Click="EindejaarsKortingButton_Click"></Button>
+        <Button x:Name="VervangLeverancierButton" Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" Height="30" Margin="10,17" Content="Vervang leverancier" Click="VervangLeverancierButton_Click"></Button>
+        <Label x:Name="ContentLabel" Grid.Row="5" Grid.ColumnSpan="2" VerticalAlignment="Center" Height="30" HorizontalContentAlignment="Center" Margin="0,16,0,17"></Label>
     </Grid>
 </Window>
