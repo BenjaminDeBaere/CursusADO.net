@@ -34,9 +34,9 @@ namespace WPFOpgave2
                 var adres = AdresTextBox.Text.ToString();
                 var postcode = PostcodeTextBox.Text.ToString();
                 var plaats = PlaatsTextBox.Text.ToString();
-                if (manager.LeverancierToevoegen(naam, adres, postcode, plaats))
+                if (manager.LeverancierToevoegen(naam, adres, postcode, plaats) != 0)
                 {
-                    ContentLabel.Content = "Nieuwe leverancier is toegevoegd.";
+                    ContentLabel.Content = "Nieuwe leverancier is toegevoegd met het nummer " + manager.LeverancierToevoegen(NaamTextBox.Text.ToString(), AdresTextBox.Text.ToString(), PostcodeTextBox.Text.ToString(), PlaatsTextBox.Text.ToString()).ToString() ;
                 }
                 else
                 {

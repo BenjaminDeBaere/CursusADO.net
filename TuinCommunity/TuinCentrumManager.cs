@@ -11,15 +11,15 @@ namespace TuinCommunity
 {
     public class TuinCentrumManager
     {
-        public Boolean LeverancierToevoegen(String naam, String adres, String postcode, String plaats)
+        public Int64 LeverancierToevoegen(String naam, String adres, String postcode, String plaats)
         {
             var dbManager = new TuinDBManager();
             using (var conTuin = dbManager.GetConnection())
             {
                 using (var comLeverancierToevoegen = conTuin.CreateCommand())
                 {
-                    comLeverancierToevoegen.CommandType = CommandType.Text;
-                    comLeverancierToevoegen.CommandText = "insert into Leveranciers (Naam,Adres,PostNr,Woonplaats) values(@naam, @adres, @postcode, @plaats)";
+                    comLeverancierToevoegen.CommandType = CommandType.StoredProcedure;
+                    comLeverancierToevoegen.CommandText = "LeverancierToevoegen";
 
                     DbParameter parNaam = comLeverancierToevoegen.CreateParameter();
                     parNaam.ParameterName = "@naam";
@@ -42,7 +42,8 @@ namespace TuinCommunity
                     comLeverancierToevoegen.Parameters.Add(parPlaats);
 
                     conTuin.Open();
-                    return comLeverancierToevoegen.ExecuteNonQuery() != 0;
+                    Int64 LeverancierNummer = Convert.ToInt64(comLeverancierToevoegen.ExecuteScalar());
+                    return LeverancierNummer;
                 }
             }
         }
@@ -115,6 +116,103 @@ namespace TuinCommunity
                 }
             }
             
+        }
+        public Decimal GemiddeldePrijsBerekenen(String soort)
+        {
+            var dbManager = new TuinDBManager();
+            using (var conTuin = dbManager.GetConnection())
+            {
+                using (var comGemiddeldePrijs = conTuin.CreateCommand())
+                {
+                    comGemiddeldePrijs.CommandType = CommandType.StoredProcedure;
+                    comGemiddeldePrijs.CommandText = "berekenGemiddeldePrijs";
+
+                    var parSoort = comGemiddeldePrijs.CreateParameter();
+                    parSoort.ParameterName = "@Soort";
+                    parSoort.Value = soort;
+                    comGemiddeldePrijs.Parameters.Add(parSoort);
+
+                    conTuin.Open();
+                    Object resultaat = comGemiddeldePrijs.ExecuteScalar();
+                    if (resultaat == null)
+                    {
+                        throw new Exception("Soort bestaat niet");
+                    }
+                    else
+                    {
+                        return Convert.ToDecimal(resultaat);
+                    }
+
+
+                }
+            }
+            
+        }
+        public Planten plantInfoRaadplegen(int plantNr)
+        {
+            var dbManager = new TuinDBManager();
+            using (var conTuin = dbManager.GetConnection())
+            {
+                using (var comPlantInfo = conTuin.CreateCommand())
+                {
+                    comPlantInfo.CommandType = CommandType.StoredProcedure;
+                    comPlantInfo.CommandText = "PlantGegevens";
+
+                    var parPlantNr = comPlantInfo.CreateParameter();
+                    parPlantNr.ParameterName = "@plantNr";
+                    parPlantNr.Value = plantNr;
+                    comPlantInfo.Parameters.Add(parPlantNr);
+
+                    var parPlantNaam = comPlantInfo.CreateParameter();
+                    parPlantNaam.ParameterName = "@plantNaam";
+                    parPlantNaam.DbType = DbType.String;
+                    parPlantNaam.Size = 30;
+                    parPlantNaam.Direction = ParameterDirection.Output;
+                    comPlantInfo.Parameters.Add(parPlantNaam);
+
+                    var parPlantSoort = comPlantInfo.CreateParameter();
+                    parPlantSoort.ParameterName = "@soortNaam";
+                    parPlantSoort.DbType = DbType.String;
+                    parPlantSoort.Size = 30;
+                    parPlantSoort.Direction = ParameterDirection.Output;
+                    comPlantInfo.Parameters.Add(parPlantSoort);
+
+                    var parLeveranciersNaam = comPlantInfo.CreateParameter();
+                    parLeveranciersNaam.ParameterName = "@leveranciersNaam";
+                    parLeveranciersNaam.DbType = DbType.String;
+                    parLeveranciersNaam.Size = 30;
+                    parLeveranciersNaam.Direction = ParameterDirection.Output;
+                    comPlantInfo.Parameters.Add(parLeveranciersNaam);
+
+                    var parPlantKleur = comPlantInfo.CreateParameter();
+                    parPlantKleur.ParameterName = "@kleur";
+                    parPlantKleur.DbType = DbType.String;
+                    parPlantKleur.Size = 10;
+                    parPlantKleur.Direction = ParameterDirection.Output;
+                    comPlantInfo.Parameters.Add(parPlantKleur);
+
+                    var parPlantVerkoopsPrijs = comPlantInfo.CreateParameter();
+                    parPlantVerkoopsPrijs.ParameterName = "@VerkoopPrijs";
+                    parPlantVerkoopsPrijs.DbType = DbType.Currency;
+                    parPlantVerkoopsPrijs.Direction = ParameterDirection.Output;
+                    comPlantInfo.Parameters.Add(parPlantVerkoopsPrijs);
+
+                    conTuin.Open();
+                    comPlantInfo.ExecuteNonQuery();
+                    if(parPlantNr.Value.Equals(DBNull.Value))
+                    {
+                        throw new Exception("PlantNummer bestaat niet");
+                    }
+                    else
+                    {
+                        return new Planten(
+                            parPlantNaam.Value.ToString(),
+                            parPlantSoort.Value.ToString(),
+                            parLeveranciersNaam.Value.ToString(),                            
+                            parPlantKleur.Value.ToString(), (Decimal)parPlantVerkoopsPrijs.Value);
+                    }
+                }
+            }
         }
     }
 }

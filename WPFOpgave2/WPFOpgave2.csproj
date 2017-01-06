@@ -58,6 +58,15 @@
     <Compile Include="WPFOpgave3.xaml.cs">
       <DependentUpon>WPFOpgave3.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPFOpgave5.xaml.cs">
+      <DependentUpon>WPFOpgave5.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFOpgave6.xaml.cs">
+      <DependentUpon>WPFOpgave6.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFOpgave8.xaml.cs">
+      <DependentUpon>WPFOpgave8.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -71,6 +80,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="WPFOpgave3.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFOpgave5.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFOpgave6.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WPFOpgave8.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

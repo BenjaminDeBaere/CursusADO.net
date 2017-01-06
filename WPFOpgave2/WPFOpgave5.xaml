@@ -1,0 +1,17 @@
+﻿<Window x:Class="WPFOpgave2.WPFOpgave5"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFOpgave2"
+        mc:Ignorable="d"
+        Title="WPFOpgave5" Height="300" Width="300">
+    <StackPanel>
+        <StackPanel Orientation="Horizontal" Height="85">
+            <Label HorizontalAlignment="Center" VerticalAlignment="Bottom" Content="Soort: " Margin="50,0,0,10"></Label>
+            <TextBox HorizontalAlignment="Center" VerticalAlignment="Bottom" x:Name="TextBoxSoort" Height="20" Width="150" Margin="10"></TextBox>
+        </StackPanel>
+        <Button x:Name="GemiddeldeKostprijsButton" Height="30" Content="Bereken gemiddelde kostprijs" Margin="30" Click="GemiddeldeKostprijsButton_Click"></Button>
+        <Label Content="" x:Name="StatusLabel" Margin="25"></Label>
+    </StackPanel>
+</Window>
