@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFOpgave2"
         mc:Ignorable="d"
-        Title="WPFOpgave8" Height="300" Width="300">
-    <Grid>
-        
-    </Grid>
+        Title="WPFOpgave8" Height="300" Width="300" Loaded="Window_Loaded">
+    <StackPanel>
+        <StackPanel Orientation="Horizontal" Height="50">
+            <Label Content="Kies een soort: " VerticalContentAlignment="Center"  ></Label>
+            <ComboBox Name="ComboboxSoorten" Width="150" Margin="15" SelectionChanged="ComboboxSoorten_SelectionChanged" ></ComboBox>
+        </StackPanel>
+        <ListBox Name="ListBoxPlanten" Height="200" Margin="10,0,25,0"></ListBox>
+    </StackPanel>
 </Window>

@@ -214,5 +214,69 @@ namespace TuinCommunity
                 }
             }
         }
+        public List<String> GetPlantNaamPerSoort(String plantSoort)
+        {
+            List<String> planten = new List<String>();
+            var manager = new TuinDBManager();
+            using (var conTuin = manager.GetConnection())
+            {
+                using (var comPlantNaamPerSoort = conTuin.CreateCommand())
+                {
+                    comPlantNaamPerSoort.CommandType = CommandType.Text;
+                    if (plantSoort != string.Empty)
+                    {
+                        comPlantNaamPerSoort.CommandText =
+                            "select Planten.Naam as plantNaam from Planten inner join Soorten on Planten.SoortNr= Soorten.SoortNr where Soort = @plantSoort order by plantNaam";
+
+                        var parPlantSoort = comPlantNaamPerSoort.CreateParameter();
+                        parPlantSoort.ParameterName = "@plantSoort";
+                        parPlantSoort.Value = plantSoort;
+                        comPlantNaamPerSoort.Parameters.Add(parPlantSoort);
+                    }
+                    else
+                    {
+                        comPlantNaamPerSoort.CommandText = "Select Naam as plantNaam from Planten";
+
+                    }
+                    conTuin.Open();
+                    using (var rdrPlantNaamPerSoort = comPlantNaamPerSoort.ExecuteReader())
+                    {
+                        Int32 plantNaamPos = rdrPlantNaamPerSoort.GetOrdinal("plantNaam");
+
+                        while(rdrPlantNaamPerSoort.Read())
+                        {
+                            planten.Add(rdrPlantNaamPerSoort.GetString(plantNaamPos));
+                        }
+                    }
+                }
+             
+            }
+            return planten;
+        }
+        public List<String> GetSoorten()
+        {
+            List<String> soorten = new List<String>();
+            var manager = new TuinDBManager();
+            using (var conTuin = manager.GetConnection())
+            {
+                using (var comVulComboboxSoorten = conTuin.CreateCommand())
+                {
+                    comVulComboboxSoorten.CommandType = CommandType.Text;
+                    comVulComboboxSoorten.CommandText = "Select Soort as SoortNaam from Soorten Order by soort";
+
+                    conTuin.Open();
+                    using (var rdrVulComboboxSoorten = comVulComboboxSoorten.ExecuteReader())
+                    {
+                        Int32 plantSoortPos = rdrVulComboboxSoorten.GetOrdinal("SoortNaam");
+                        while(rdrVulComboboxSoorten.Read())
+                        {
+                            soorten.Add(rdrVulComboboxSoorten.GetString(plantSoortPos));
+                        }
+                    }
+                }
+            }
+            return soorten;
+        }
+  
     }
 }

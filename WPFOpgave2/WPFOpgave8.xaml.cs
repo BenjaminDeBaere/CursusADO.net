@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TuinCommunity;
 
 namespace WPFOpgave2
 {
@@ -22,6 +23,45 @@ namespace WPFOpgave2
         public WPFOpgave8()
         {
             InitializeComponent();
+        }
+
+        public List<String> soortenOb = new List<String>();
+        public List<String> plantenOb = new List<String>();
+
+        public void ComboBoxInvullen()
+        {
+            var manager = new TuinCentrumManager();
+            soortenOb = manager.GetSoorten();
+            foreach(string soort in soortenOb)
+            {
+                ComboboxSoorten.Items.Add(soort);
+            }
+        }
+
+        public void VulRoosterIn()
+        {
+            var manager = new TuinCentrumManager();
+            if (ComboboxSoorten.SelectedItem != null)
+            {
+                plantenOb = manager.GetPlantNaamPerSoort(ComboboxSoorten.SelectedItem.ToString());
+            }
+            else
+            {
+                plantenOb = manager.GetPlantNaamPerSoort(string.Empty);        
+            }
+            ListBoxPlanten.ItemsSource = plantenOb;
+           
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ComboBoxInvullen();
+            VulRoosterIn();
+        }
+
+        private void ComboboxSoorten_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            VulRoosterIn();
         }
     }
 }
