@@ -4,13 +4,65 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFOpgave2"
+        xmlns:glob="clr-namespace:System.Globalization;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="WPFOpgave8" Height="300" Width="300" Loaded="Window_Loaded">
+        Title="WPFOpgave8" Height="350" Width="635" Loaded="Window_Loaded">
+    <Window.Resources>
+        <ControlTemplate x:Key="validationTemplate">
+            <StackPanel Orientation="Vertical">
+                <AdornedElementPlaceholder/>
+                <TextBlock Text="{Binding [0].ErrorContent}" Foreground="Red"></TextBlock>
+            </StackPanel>
+        </ControlTemplate>
+    </Window.Resources>
     <StackPanel>
-        <StackPanel Orientation="Horizontal" Height="50">
+        <StackPanel Orientation="Horizontal" Height="50" HorizontalAlignment="Center">
             <Label Content="Kies een soort: " VerticalContentAlignment="Center"  ></Label>
             <ComboBox Name="ComboboxSoorten" Width="150" Margin="15" SelectionChanged="ComboboxSoorten_SelectionChanged" ></ComboBox>
         </StackPanel>
-        <ListBox Name="ListBoxPlanten" Height="200" Margin="10,0,25,0"></ListBox>
+        <StackPanel Orientation="Horizontal">
+            <ListBox Name="ListBoxPlanten" Height="200" Width ="250" Margin="25,0,10,0" ></ListBox>
+            <StackPanel >
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Label Content="Plantnummer" Margin="5" Width="90"></Label>
+                    <TextBox Name="textBoxPlantNummer" Width="150" Margin="5" IsReadOnly="true" >
+                        <TextBox.Text>
+                            <Binding ElementName="ListBoxPlanten" Path="SelectedItem.PlantNr"></Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Label Content="Leverancier" Margin="5" Width="90"></Label>
+                    <TextBox Name="TextBoxLeverancierNummer" Margin="5" Width="150" IsReadOnly="true">
+                        <TextBox.Text>
+                            <Binding ElementName="ListBoxPlanten" Path="SelectedItem.LeverancierNr"></Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"  Margin="0,10,0,0">
+                    <Label Content="Kleur" Margin="5" Width="90"></Label>
+                    <TextBox Name="TextBoxKleur" Margin="5" Width="150" Validation.ErrorTemplate="{StaticResource validationTemplate}"  >
+                        <TextBox.Text>
+                            <Binding ElementName="ListBoxPlanten" Path="SelectedItem.PlantKleur"  >
+                                <Binding.ValidationRules>
+                                    <local:KleurRules/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>                    
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Label Content="Prijs: " Margin="5" Width="90"></Label>
+                    <TextBox Name="TextBoxPrijs" Margin="5" Width="150" Validation.ErrorTemplate="{StaticResource validationTemplate}"  >
+                        <Binding ElementName="ListBoxPlanten" Path="SelectedItem.VerkoopPrijs" ConverterCulture="{x:Static glob:CultureInfo.CurrentCulture}" StringFormat="c">
+                            <Binding.ValidationRules>
+                                <local:PrijsRules/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox>
+                </StackPanel>                
+            </StackPanel>  
+        </StackPanel>
+        <Button Content="Opslaan" Name="ButtonOpslaan" Width="200" Height="30" Margin="20" ></Button>
     </StackPanel>
 </Window>

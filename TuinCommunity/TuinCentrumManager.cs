@@ -148,6 +148,8 @@ namespace TuinCommunity
             }
             
         }
+
+     
         public Planten plantInfoRaadplegen(int plantNr)
         {
             var dbManager = new TuinDBManager();
@@ -171,7 +173,7 @@ namespace TuinCommunity
                     comPlantInfo.Parameters.Add(parPlantNaam);
 
                     var parPlantSoort = comPlantInfo.CreateParameter();
-                    parPlantSoort.ParameterName = "@soortNaam";
+                    parPlantSoort.ParameterName = "@soortNr";
                     parPlantSoort.DbType = DbType.String;
                     parPlantSoort.Size = 30;
                     parPlantSoort.Direction = ParameterDirection.Output;
@@ -214,38 +216,75 @@ namespace TuinCommunity
                 }
             }
         }
-        public List<String> GetPlantNaamPerSoort(String plantSoort)
+        public List<Soorten> GetSoorten()
         {
-            List<String> planten = new List<String>();
+            var soorten = new List<Soorten>();
+            var manager = new TuinDBManager();
+            using (var conTuin = manager.GetConnection())
+            {
+                using (var comSoorten = conTuin.CreateCommand())
+                {
+                    comSoorten.CommandType = CommandType.Text;
+                    comSoorten.CommandText =
+                    "select SoortNr, Soort from Soorten order by Soort";
+                    conTuin.Open();
+                    using (var rdrSoorten = comSoorten.ExecuteReader())
+                    {
+                        var soortPos = rdrSoorten.GetOrdinal("soort");
+                        var soortnrPos = rdrSoorten.GetOrdinal("soortnr");
+                        while (rdrSoorten.Read())
+                        {
+                            soorten.Add(new Soorten(
+                            rdrSoorten.GetString(soortPos), rdrSoorten.GetInt32(soortnrPos)));
+                        }
+                    }
+                }
+            }
+            return soorten;
+        }
+        public List<Plant> GetPlantNaamPerSoort(int soortNr)
+        {
+            List<Plant> planten = new List<Plant>();
             var manager = new TuinDBManager();
             using (var conTuin = manager.GetConnection())
             {
                 using (var comPlantNaamPerSoort = conTuin.CreateCommand())
                 {
                     comPlantNaamPerSoort.CommandType = CommandType.Text;
-                    if (plantSoort != string.Empty)
+                    if (soortNr != 0)
                     {
                         comPlantNaamPerSoort.CommandText =
-                            "select Planten.Naam as plantNaam from Planten inner join Soorten on Planten.SoortNr= Soorten.SoortNr where Soort = @plantSoort order by plantNaam";
+                            "select * from planten where SoortNr = @plantSoort";
 
                         var parPlantSoort = comPlantNaamPerSoort.CreateParameter();
                         parPlantSoort.ParameterName = "@plantSoort";
-                        parPlantSoort.Value = plantSoort;
+                        parPlantSoort.Value = soortNr;
                         comPlantNaamPerSoort.Parameters.Add(parPlantSoort);
                     }
                     else
                     {
-                        comPlantNaamPerSoort.CommandText = "Select Naam as plantNaam from Planten";
+                        comPlantNaamPerSoort.CommandText = "Select * from Planten";
 
                     }
                     conTuin.Open();
                     using (var rdrPlantNaamPerSoort = comPlantNaamPerSoort.ExecuteReader())
                     {
-                        Int32 plantNaamPos = rdrPlantNaamPerSoort.GetOrdinal("plantNaam");
+                        var plantNaamPos = rdrPlantNaamPerSoort.GetOrdinal("Naam");
+                        var plantNrPos = rdrPlantNaamPerSoort.GetOrdinal("plantNr");
+                        var LevNrPos = rdrPlantNaamPerSoort.GetOrdinal("levnr");
+                        var KleurPos = rdrPlantNaamPerSoort.GetOrdinal("kleur");
+                        var VerkoopPrijsPos = rdrPlantNaamPerSoort.GetOrdinal("verkoopprijs");
+                        var SoortPos = rdrPlantNaamPerSoort.GetOrdinal("soortnr");
 
                         while(rdrPlantNaamPerSoort.Read())
                         {
-                            planten.Add(rdrPlantNaamPerSoort.GetString(plantNaamPos));
+                            var plant = new Plant(
+                                rdrPlantNaamPerSoort.GetString(plantNaamPos),
+                                rdrPlantNaamPerSoort.GetInt32(plantNrPos),
+                                rdrPlantNaamPerSoort.GetInt32(LevNrPos),
+                                rdrPlantNaamPerSoort.GetString(KleurPos),
+                                rdrPlantNaamPerSoort.GetDecimal(VerkoopPrijsPos));
+                            planten.Add(plant);
                         }
                     }
                 }
@@ -253,30 +292,6 @@ namespace TuinCommunity
             }
             return planten;
         }
-        public List<String> GetSoorten()
-        {
-            List<String> soorten = new List<String>();
-            var manager = new TuinDBManager();
-            using (var conTuin = manager.GetConnection())
-            {
-                using (var comVulComboboxSoorten = conTuin.CreateCommand())
-                {
-                    comVulComboboxSoorten.CommandType = CommandType.Text;
-                    comVulComboboxSoorten.CommandText = "Select Soort as SoortNaam from Soorten Order by soort";
-
-                    conTuin.Open();
-                    using (var rdrVulComboboxSoorten = comVulComboboxSoorten.ExecuteReader())
-                    {
-                        Int32 plantSoortPos = rdrVulComboboxSoorten.GetOrdinal("SoortNaam");
-                        while(rdrVulComboboxSoorten.Read())
-                        {
-                            soorten.Add(rdrVulComboboxSoorten.GetString(plantSoortPos));
-                        }
-                    }
-                }
-            }
-            return soorten;
-        }
-  
+       
     }
 }

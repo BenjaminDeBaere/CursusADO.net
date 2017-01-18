@@ -25,43 +25,37 @@ namespace WPFOpgave2
             InitializeComponent();
         }
 
-        public List<String> soortenOb = new List<String>();
-        public List<String> plantenOb = new List<String>();
+        public List<Soorten> soortenOb = new List<Soorten>();
+        public List<Plant> plantenNaamOb = new List<Plant>();
+        private string GeselecteerdeSoortNaam;
 
         public void ComboBoxInvullen()
         {
             var manager = new TuinCentrumManager();
-            soortenOb = manager.GetSoorten();
-            foreach(string soort in soortenOb)
-            {
-                ComboboxSoorten.Items.Add(soort);
-            }
+            ComboboxSoorten.DisplayMemberPath = "SoortNaam";
+            ComboboxSoorten.SelectedValuePath = "SoortNr";
+            ComboboxSoorten.ItemsSource = manager.GetSoorten();            
         }
 
-        public void VulRoosterIn()
-        {
-            var manager = new TuinCentrumManager();
-            if (ComboboxSoorten.SelectedItem != null)
-            {
-                plantenOb = manager.GetPlantNaamPerSoort(ComboboxSoorten.SelectedItem.ToString());
-            }
-            else
-            {
-                plantenOb = manager.GetPlantNaamPerSoort(string.Empty);        
-            }
-            ListBoxPlanten.ItemsSource = plantenOb;
-           
-        }
+    
+    
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ComboBoxInvullen();
-            VulRoosterIn();
+            
+       
         }
 
         private void ComboboxSoorten_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            VulRoosterIn();
+            GeselecteerdeSoortNaam = ((Soorten)ComboboxSoorten.SelectedItem).SoortNaam;
+            var manager = new TuinCentrumManager();
+            plantenNaamOb = manager.GetPlantNaamPerSoort(Convert.ToInt32(ComboboxSoorten.SelectedValue));
+            ListBoxPlanten.ItemsSource = plantenNaamOb;
+            ListBoxPlanten.DisplayMemberPath = "PlantNaam";
         }
+
+
     }
 }
