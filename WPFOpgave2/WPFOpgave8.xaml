@@ -15,13 +15,13 @@
             </StackPanel>
         </ControlTemplate>
     </Window.Resources>
-    <StackPanel>
+    <StackPanel Name="MainPanel">
         <StackPanel Orientation="Horizontal" Height="50" HorizontalAlignment="Center">
             <Label Content="Kies een soort: " VerticalContentAlignment="Center"  ></Label>
-            <ComboBox Name="ComboboxSoorten" Width="150" Margin="15" SelectionChanged="ComboboxSoorten_SelectionChanged" ></ComboBox>
+            <ComboBox Name="ComboboxSoorten" Width="150" Margin="15" SelectionChanged="ComboboxSoorten_SelectionChanged" PreviewKeyUp="ComboboxSoorten_KeyUp" PreviewMouseDown="ComboboxSoorten_MouseDown" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <ListBox Name="ListBoxPlanten" Height="200" Width ="250" Margin="25,0,10,0" ></ListBox>
+            <ListBox Name="ListBoxPlanten" Height="200" Width ="250" Margin="25,0,10,0" PreviewMouseDown="ListBoxPlanten_MouseDown" PreviewKeyUp="ListBoxPlanten_KeyUp"  />
             <StackPanel >
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                     <Label Content="Plantnummer" Margin="5" Width="90"></Label>
@@ -41,9 +41,9 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal"  Margin="0,10,0,0">
                     <Label Content="Kleur" Margin="5" Width="90"></Label>
-                    <TextBox Name="TextBoxKleur" Margin="5" Width="150" Validation.ErrorTemplate="{StaticResource validationTemplate}"  >
+                    <TextBox Name="TextBoxKleur" Margin="5" Width="150" Validation.ErrorTemplate="{StaticResource validationTemplate}"   >
                         <TextBox.Text>
-                            <Binding ElementName="ListBoxPlanten" Path="SelectedItem.PlantKleur"  >
+                            <Binding ElementName="ListBoxPlanten" Path="SelectedItem.PlantKleur" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" >
                                 <Binding.ValidationRules>
                                     <local:KleurRules/>
                                 </Binding.ValidationRules>
@@ -54,15 +54,15 @@
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                     <Label Content="Prijs: " Margin="5" Width="90"></Label>
                     <TextBox Name="TextBoxPrijs" Margin="5" Width="150" Validation.ErrorTemplate="{StaticResource validationTemplate}"  >
-                        <Binding ElementName="ListBoxPlanten" Path="SelectedItem.VerkoopPrijs" ConverterCulture="{x:Static glob:CultureInfo.CurrentCulture}" StringFormat="c">
+                        <Binding ElementName="ListBoxPlanten" Path="SelectedItem.VerkoopPrijs" ConverterCulture="{x:Static glob:CultureInfo.CurrentCulture}" StringFormat="c" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                             <Binding.ValidationRules>
-                                <local:PrijsRules/>
+                                <local:PrijsRules />
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox>
                 </StackPanel>                
             </StackPanel>  
         </StackPanel>
-        <Button Content="Opslaan" Name="ButtonOpslaan" Width="200" Height="30" Margin="20" ></Button>
+        <Button Content="Opslaan" Name="ButtonOpslaan" Width="200" Height="30" Margin="20" Click="ButtonOpslaan_Click"  ></Button>
     </StackPanel>
 </Window>

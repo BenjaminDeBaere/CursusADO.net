@@ -58,6 +58,9 @@
     </ApplicationDefinition>
     <Compile Include="KleurRules.cs" />
     <Compile Include="PrijsRules.cs" />
+    <Compile Include="WPFOpgave10.xaml.cs">
+      <DependentUpon>WPFOpgave10.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPFOpgave3.xaml.cs">
       <DependentUpon>WPFOpgave3.xaml</DependentUpon>
     </Compile>
@@ -82,6 +85,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="WPFOpgave10.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WPFOpgave3.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -13,7 +13,8 @@ namespace WPFOpgave2
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
             decimal prijs;
-            if(Decimal.TryParse(value.ToString(), out prijs))
+            NumberStyles style = NumberStyles.Currency;
+            if(Decimal.TryParse(value.ToString(),style, cultureInfo, out prijs))
             {
                 if(prijs<=0)
                 {

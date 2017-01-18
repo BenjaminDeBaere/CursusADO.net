@@ -292,6 +292,53 @@ namespace TuinCommunity
             }
             return planten;
         }
+        public List<Plant> VeranderPlanten(List<Plant> planten , int soortNr)
+        {
+            List<Plant> nietVeranderdePlanten = new List<Plant>();
+            var manager = new TuinDBManager();
+            using (var conTuin = manager.GetConnection())
+            {
+                using (var comVerander = conTuin.CreateCommand())
+                {
+                    comVerander.CommandType = CommandType.Text;
+                    comVerander.CommandText = "update planten set kleur = @plantKleur, VerkoopPrijs = @prijs where soortNr = @soortNr";
+
+                    var parPlantKleur = comVerander.CreateParameter();
+                    parPlantKleur.ParameterName = "@plantKleur";
+                    comVerander.Parameters.Add(parPlantKleur);
+
+                    var parPrijs = comVerander.CreateParameter();
+                    parPrijs.ParameterName = "@prijs";
+                    comVerander.Parameters.Add(parPrijs);
+
+                    var parsoortNr = comVerander.CreateParameter();
+                    parsoortNr.ParameterName = "@soortNr";
+                    parsoortNr.Value = soortNr;
+                    comVerander.Parameters.Add(parsoortNr);
+
+                    conTuin.Open();
+                    foreach(Plant plant in planten)
+                    {
+                        try
+                        {
+                            
+                            parPlantKleur.Value = plant.PlantKleur;
+                            parPrijs.Value = plant.VerkoopPrijs;
+
+                            if (comVerander.ExecuteNonQuery() == 0)
+                                nietVeranderdePlanten.Add(plant);
+                        }
+                        catch
+                        {
+                            nietVeranderdePlanten.Add(plant);
+                        }
+                    }
+
+
+                }
+                return nietVeranderdePlanten;
+            }
+        }
        
     }
 }
