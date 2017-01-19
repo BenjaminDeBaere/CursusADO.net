@@ -6,18 +6,18 @@
         xmlns:local="clr-namespace:WPFOpgave2"
         xmlns:TuinCommunity="clr-namespace:TuinCommunity;assembly=TuinCommunity" x:Class="WPFOpgave2.WPFOpgave10"
         mc:Ignorable="d"
-        Title="WPFOpgave10" Height="300" Width="500" Loaded="Window_Loaded" SizeToContent="Width">
+        Title="WPFOpgave10" Height="300" Width="500" Loaded="Window_Loaded" SizeToContent="Width" Closing="Window_Closing">
     <Window.Resources>
         <CollectionViewSource x:Key="leverancierViewSource" d:DesignSource="{d:DesignInstance {x:Type TuinCommunity:Leverancier}, CreateList=True}"/>
     </Window.Resources>
     <DockPanel LastChildFill="true">
-        <Border Height="30" Background="white" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="top">
+        <Border Height="30" Background="white" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="top" DataContext="{StaticResource leverancierViewSource}">
             <StackPanel Orientation="Horizontal">
                 <Label Content="Kies postnummer: " Width="150"></Label>
-                <ComboBox Name="PostcodeComboBox" Width="100" ItemsSource="{Binding}" DisplayMemberPath="Postcode"></ComboBox>
+                <ComboBox Name="PostcodeComboBox" Width="100" SelectionChanged="PostcodeComboBox_SelectionChanged" ></ComboBox>
             </StackPanel>
         </Border>
-    <Grid DataContext="{StaticResource leverancierViewSource}">
+    <Grid DataContext="{StaticResource leverancierViewSource}" DockPanel.Dock="Bottom">
 
             <DataGrid x:Name="leverancierDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected"  ItemsSource="{Binding}" EnableRowVirtualization="True" AutoGenerateColumns="False" Margin="0" >
                 <DataGrid.Columns>
