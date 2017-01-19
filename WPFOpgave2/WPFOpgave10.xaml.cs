@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TuinCommunity;
 
 namespace WPFOpgave2
 {
@@ -22,6 +23,18 @@ namespace WPFOpgave2
         public WPFOpgave10()
         {
             InitializeComponent();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            CollectionViewSource leverancierViewSource = ((CollectionViewSource)(this.FindResource("leverancierViewSource")));
+            var manager = new TuinCentrumManager();
+            List<Leverancier> leveranciersOb = new List<Leverancier>();
+            leveranciersOb = manager.GetLeveranciers(0);
+            leverancierViewSource.Source = leveranciersOb;
+
+            
         }
     }
 }

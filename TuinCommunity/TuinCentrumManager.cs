@@ -339,6 +339,48 @@ namespace TuinCommunity
                 return nietVeranderdePlanten;
             }
         }
+        public List<Leverancier> GetLeveranciers(int? postcode)
+        {
+            List<Leverancier> leveranciers = new List<Leverancier>();
+            var manager = new TuinDBManager();
+            using (var conTuin = manager.GetConnection())
+            {
+                using (var comGetLeveranciers = conTuin.CreateCommand())
+                {
+                    if (postcode != 0)
+                    {
+                        comGetLeveranciers.CommandType = CommandType.Text;
+                        comGetLeveranciers.CommandText = "select * from leveranciers where postcode = @postcode";
+                        var parPostcode = comGetLeveranciers.CreateParameter();
+                        parPostcode.ParameterName = "@postcode";
+                        parPostcode.Value = postcode;
+                        comGetLeveranciers.Parameters.Add(parPostcode);
+                    }
+                    else
+                        comGetLeveranciers.CommandText = "select * from leveranciers";
+                    conTuin.Open();
+                    using (var rdrLeveranciers = comGetLeveranciers.ExecuteReader())
+                    {
+                        int leverancierNrPos = rdrLeveranciers.GetOrdinal("LevNr");
+                        int leverancierNaamPos = rdrLeveranciers.GetOrdinal("Naam");
+                        int leverancierAdresPos = rdrLeveranciers.GetOrdinal("Adres");
+                        int leverancierPostcodePos = rdrLeveranciers.GetOrdinal("PostNr");
+                        int leverancierWoonplaatsPos = rdrLeveranciers.GetOrdinal("Woonplaats");
+
+                        while(rdrLeveranciers.Read())
+                        {
+                            leveranciers.Add(new Leverancier(
+                                rdrLeveranciers.GetInt32(leverancierNrPos),
+                                rdrLeveranciers.GetString(leverancierNaamPos),
+                                rdrLeveranciers.GetString(leverancierAdresPos),
+                                rdrLeveranciers.GetString(leverancierPostcodePos),
+                                rdrLeveranciers.GetString(leverancierWoonplaatsPos)));
+                        }
+                    }
+                }
+            }
+            return leveranciers;
+        }
        
     }
 }
